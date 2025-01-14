@@ -1,5 +1,9 @@
 PreCommit:
-  RuboCop:
+  RuboCopApply:
     enabled: true
     on_warn: fail
     command: ['rubocop', '-a']
+  RuboCopCheck:
+    enabled: true
+    on_warn: fail
+    command: ['rubocop']
