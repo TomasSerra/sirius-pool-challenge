@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  ranking: 1
+  profile_picture_url: MyString
+  preferred_cue: MyString
+
+two:
+  name: MyString
+  ranking: 1
+  profile_picture_url: MyString
+  preferred_cue: MyString
