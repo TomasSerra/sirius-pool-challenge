@@ -15,4 +15,3 @@ class CreateMatches < ActiveRecord::Migration[8.0]
     add_foreign_key :matches, :players, column: :winner_id, optional: true
   end
 end
-
