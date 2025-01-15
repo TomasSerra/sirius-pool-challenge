@@ -7,4 +7,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  namespace :api do
+    namespace :v1 do
+      resources :players
+      resources :matches
+      get "generate_presigned_url", to: "storage#generate_presigned_url"
+    end
+  end
 end

@@ -34,12 +34,15 @@
     <orderEntry type="library" scope="PROVIDED" name="actionpack (v8.0.1, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actiontext (v8.0.1, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actionview (v8.0.1, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="active_model_serializers (v0.10.15, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="activejob (v8.0.1, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="activemodel (v8.0.1, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="activerecord (v8.0.1, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="activestorage (v8.0.1, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="activesupport (v8.0.1, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ast (v2.4.2, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="azure-storage-blob (v2.0.3, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="azure-storage-common (v2.0.4, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="base64 (v0.2.0, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bcrypt_pbkdf (v1.1.1, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="benchmark (v0.4.0, ruby-3.4.1-p0) [gem]" level="application" />
@@ -48,6 +51,7 @@
     <orderEntry type="library" scope="PROVIDED" name="brakeman (v7.0.0, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="builder (v3.3.0, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bundler (v2.6.2, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="case_transform (v0.2, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="childprocess (v5.1.0, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="concurrent-ruby (v1.3.4, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="connection_pool (v2.5.0, ruby-3.4.1-p0) [gem]" level="application" />
@@ -59,6 +63,18 @@
     <orderEntry type="library" scope="PROVIDED" name="ed25519 (v1.3.0, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="erubi (v1.13.1, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="et-orbi (v1.2.11, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faraday (v1.10.4, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faraday-em_http (v1.0.0, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faraday-em_synchrony (v1.0.0, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faraday-excon (v1.1.0, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faraday-httpclient (v1.0.1, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faraday-multipart (v1.1.0, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faraday-net_http (v1.0.2, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faraday-net_http_persistent (v1.2.0, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faraday-patron (v1.0.0, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faraday-rack (v1.0.0, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faraday-retry (v1.0.3, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faraday_middleware (v1.2.1, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="fugit (v1.11.1, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="globalid (v1.2.1, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="i18n (v1.14.6, ruby-3.4.1-p0) [gem]" level="application" />
@@ -66,6 +82,7 @@
     <orderEntry type="library" scope="PROVIDED" name="io-console (v0.8.0, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="irb (v1.14.3, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="json (v2.9.1, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="jsonapi-renderer (v0.2.2, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="kamal (v2.4.0, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="language_server-protocol (v3.17.0.3, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="logger (v1.6.5, ruby-3.4.1-p0) [gem]" level="application" />
@@ -75,6 +92,8 @@
     <orderEntry type="library" scope="PROVIDED" name="mini_mime (v1.1.5, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="minitest (v5.25.4, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="msgpack (v1.7.5, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="multipart-post (v2.4.1, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="net-http-persistent (v4.0.5, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="net-imap (v0.5.5, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="net-pop (v0.1.2, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="net-protocol (v0.2.2, ruby-3.4.1-p0) [gem]" level="application" />
@@ -114,6 +133,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rubocop-rails (v2.28.0, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubocop-rails-omakase (v1.0.0, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ruby-progressbar (v1.13.0, ruby-3.4.1-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="ruby2_keywords (v0.0.5, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="securerandom (v0.4.1, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="solid_cable (v3.0.5, ruby-3.4.1-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="solid_cache (v1.0.6, ruby-3.4.1-p0) [gem]" level="application" />
@@ -160,6 +180,7 @@
         <option value="scaffold" />
         <option value="scaffold_controller" />
         <option value="script" />
+        <option value="serializer" />
         <option value="solid_cable:install" />
         <option value="solid_cable:update" />
         <option value="solid_cache:install" />
@@ -205,6 +226,7 @@
         <option value="scaffold" />
         <option value="scaffold_controller" />
         <option value="script" />
+        <option value="serializer" />
         <option value="solid_cable:install" />
         <option value="solid_cable:update" />
         <option value="solid_cache:install" />
