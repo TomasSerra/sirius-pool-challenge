@@ -36,7 +36,9 @@ gem "thruster", require: false
 # gem "rack-cors"
 gem "active_model_serializers"
 
-gem "azure-storage-blob", "~> 2.0", require: false
+gem "azure-blob"
+
+gem "dotenv-rails"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

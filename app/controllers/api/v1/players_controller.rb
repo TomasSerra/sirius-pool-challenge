@@ -17,18 +17,19 @@ module Api
       end
 
       def create
-        player = @player_service.create_player(player_params)
+        response = @player_service.create_player(player_params)
 
-        if player.persisted?
-          render json: player, status: :created
+        if response[:player].persisted?
+          render json: { data: response }, status: :created
         else
-          render json: { error: player.errors.messages }, status: :unprocessable_content
+          render json: { error: response[:player].errors.messages }, status: :unprocessable_content
         end
       end
 
       def update
-        if @player_service.update_player(@player, player_params)
-          render json: @player
+        player = @player_service.update_player(@player, player_params)
+        if player
+          render json: { data: { player: player } }
         else
           render json: { error: "Could not update player" }, status: :unprocessable_content
         end
@@ -50,7 +51,7 @@ module Api
       end
 
       def player_params
-        params.require(:player).permit(:name, :profile_picture_url, :ranking, :preferred_cue)
+        params.require(:player).permit(:name, :preferred_cue, :ranking, :profile_picture_url)
       end
     end
   end

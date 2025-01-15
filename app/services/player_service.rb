@@ -11,8 +11,13 @@ class PlayerService
     @player_class.find_by(id: id)
   end
 
-  def create_player(player_params)
-    @player_class.create!(player_params)
+  def create_player(player_data)
+    player_data[:ranking] ||= 0
+    image_name = SecureRandom.uuid
+    pp_image_url = generate_presigned_url("profile_pictures", image_name)
+    player_data[:profile_picture_url] = "profile_pictures/#{image_name}"
+    player = @player_class.create!(player_data)
+    { player: player, presigned_url: pp_image_url }
   rescue ActiveRecord::RecordInvalid => e
     raise StandardError, "Player creation failed: #{e.message}"
   end
@@ -33,5 +38,22 @@ class PlayerService
     return false unless player
 
     player.destroy
+  end
+
+  private
+
+  def generate_presigned_url(folder_name, file_name, expiration_time = 10.minute)
+    path = "#{folder_name}/#{file_name}"
+
+    blob = ActiveStorage::Blob.create_before_direct_upload!(
+      key: path,
+      filename: file_name,
+      byte_size: 0,
+      checksum: "no-checksum",
+      content_type: "application/octet-stream",
+      metadata: { identified: true }
+    )
+
+    blob.service_url_for_direct_upload(expires_in: expiration_time)
   end
 end
