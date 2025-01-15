@@ -45,7 +45,7 @@ module Api
       private
 
       def set_player
-        @match = @player_service.get_player(params[:id])
+        @player = @player_service.get_player(params[:id])
         render json: { error: "Player not found" }, status: :not_found unless @player
       end
 
