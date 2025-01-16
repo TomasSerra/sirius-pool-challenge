@@ -25,7 +25,7 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
                          },
                          required: %w[id name profile_picture_url]
                        }
-                     },
+                     }
                    },
                     required: %w[players]
                   }

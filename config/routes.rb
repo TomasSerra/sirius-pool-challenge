@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   get "up" => "rails/health#show", as: :rails_health_check
 
   namespace :api do
@@ -11,5 +10,4 @@ Rails.application.routes.draw do
 
   mount Rswag::Api::Engine => "/api-docs"
   mount Rswag::Ui::Engine => "/api-docs"
-
 end
