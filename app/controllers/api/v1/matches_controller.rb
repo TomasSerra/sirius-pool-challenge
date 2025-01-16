@@ -24,11 +24,10 @@ module Api
       end
 
       def update
-        if @match_service.update_match(@match, match_params)
-          render json: { data: { match: @match } }
-        else
-          render json: { error: "Could not update match" }, status: :unprocessable_content
-        end
+        response = @match_service.update_match(@match, match_params)
+          render json: { data: { match: response } }
+      rescue StandardError => e
+        render json: { error: e.message }, status: :unprocessable_content
       end
 
       def destroy

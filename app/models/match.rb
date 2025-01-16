@@ -8,4 +8,13 @@ class Match < ApplicationRecord
   validates :table_number, presence: true
   validates :player1, presence: true
   validates :player2, presence: true
+  validate :start_time_should_be_before_end_time
+
+  private
+
+  def start_time_should_be_before_end_time
+    if start_time >= end_time
+      errors.add(:start_time, "must be earlier than end time")
+    end
+  end
 end

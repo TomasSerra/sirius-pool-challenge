@@ -129,7 +129,7 @@ paths:
       description: Match ID
       required: true
       schema:
-        type: bigint
+        type: integer
     get:
       summary: Show match
       tags:

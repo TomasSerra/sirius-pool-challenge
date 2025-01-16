@@ -98,7 +98,7 @@ RSpec.describe 'Matches', type: :request, openapi: 'v1/swagger.yaml' do
   end
 
   path '/api/v1/matches/{id}' do
-    parameter name: :id, in: :path, type: :bigint, description: 'Match ID'
+    parameter name: :id, in: :path, type: :integer, description: 'Match ID'
 
     get('Show match') do
       tags 'Matches'
