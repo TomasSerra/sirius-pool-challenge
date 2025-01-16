@@ -3,3 +3,5 @@ PreCommit:
     enabled: true
     on_warn: fail
     command: ['rubocop', '-a']
+    after_all:
+      - git add .
