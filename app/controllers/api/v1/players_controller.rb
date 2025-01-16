@@ -9,7 +9,7 @@ module Api
 
       def index
         players = @player_service.get_all_players
-        render json: players
+        render json: { data: { players: players } }
       end
 
       def show
@@ -18,21 +18,16 @@ module Api
 
       def create
         response = @player_service.create_player(player_params)
-
-        if response[:player].persisted?
-          render json: { data: response }, status: :created
-        else
-          render json: { error: response[:player].errors.messages }, status: :unprocessable_content
-        end
+        render json: { data: response }, status: :created
+      rescue StandardError => e
+        render json: { error: e.message }, status: :unprocessable_content
       end
 
       def update
         player = @player_service.update_player(@player, player_params)
-        if player
-          render json: { data: { player: player } }
-        else
-          render json: { error: "Could not update player" }, status: :unprocessable_content
-        end
+        render json: { data: { player: player } }
+      rescue StandardError => e
+        render json: { error: e.message }, status: :unprocessable_content
       end
 
       def destroy
@@ -41,6 +36,8 @@ module Api
         else
           render json: { error: "Could not delete player" }, status: :unprocessable_content
         end
+      rescue StandardError => e
+        render json: { error: e.message }, status: :unprocessable_content
       end
 
       private

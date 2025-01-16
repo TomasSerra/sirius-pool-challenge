@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_15_151327) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_16_173128) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -43,11 +43,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_15_151327) do
   end
 
   create_table "matches", force: :cascade do |t|
-    t.integer "player1_id", null: false
-    t.integer "player2_id", null: false
+    t.bigint "player1_id", null: false
+    t.bigint "player2_id", null: false
     t.datetime "start_time", null: false
     t.datetime "end_time"
-    t.integer "winner_id"
+    t.bigint "winner_id"
     t.integer "table_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

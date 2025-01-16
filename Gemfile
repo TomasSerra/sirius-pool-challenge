@@ -40,11 +40,22 @@ gem "azure-blob"
 
 gem "dotenv-rails"
 
+# Swagger
+gem "rswag"
+gem "rswag-ui"
+gem "rswag-api"
+gem "rswag-specs"
+gem "rspec-rails"
+
+gem "overcommit"
+
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
   gem "brakeman", require: false
 
   gem "rubocop-rails-omakase", require: false
+
+  gem "factory_bot_rails"
+  gem "faker"
 end
-gem "overcommit"

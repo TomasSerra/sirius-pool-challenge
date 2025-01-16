@@ -18,12 +18,9 @@ module Api
 
       def create
         match = @match_service.create_match(match_params)
-
-        if match.persisted?
-          render json: { data: { match: match } }, status: :created
-        else
-          render json: { error: match.errors.messages }, status: :unprocessable_content
-        end
+        render json: { data: { match: match } }, status: :created
+      rescue StandardError => e
+        render json: { error: e.message }, status: :unprocessable_content
       end
 
       def update
