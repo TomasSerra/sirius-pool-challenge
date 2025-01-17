@@ -17,7 +17,7 @@ module Api
       end
 
       def show
-        render json: @player
+        render json: { data: { player: @player } }
       end
 
       def create

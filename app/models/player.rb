@@ -7,5 +7,6 @@ class Player < ApplicationRecord
   validates :profile_picture_url, presence: true
   validates :ranking, numericality: { only_integer: true }
 
+  default_scope { where(active: true) }
   scope :by_name, ->(name) { where("name LIKE ?", "%#{name}%") if name.present? }
 end

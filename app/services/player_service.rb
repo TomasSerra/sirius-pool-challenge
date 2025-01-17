@@ -23,7 +23,7 @@ class PlayerService
   end
 
   def update_player(id, player_params)
-    player = @player_model.find_by(id: id)
+    player = get_player(id)
     return nil unless player
 
     if player.update(player_params)
@@ -34,10 +34,13 @@ class PlayerService
   end
 
   def delete_player(id)
-    player = @player_model.find_by(id: id)
+    player = get_player(id)
     return false unless player
-
-    player.destroy
+    if player.update(active: false)
+      player
+    else
+      raise StandardError, "Player delete failed: #{player.errors.full_messages.join(', ')}"
+    end
   end
 
   private
