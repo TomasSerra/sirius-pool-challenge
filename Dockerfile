@@ -23,7 +23,7 @@ ENV RAILS_ENV=production
 # Copiar el resto del código
 COPY . .
 
-RUN echo "$MASTER_KEY" > config/master.key
+RUN echo "$RAILS_MASTER_KEY" > config/master.key
 
 # Exponer el puerto 3000p
 EXPOSE 3000
