@@ -42,7 +42,7 @@ class Match < ApplicationRecord
 
   def table_available?(table_number, start_time, end_time)
     Match.where(table_number: table_number)
-         .where('start_time < ? AND end_time > ?', end_time, start_time)
+         .where("start_time < ? AND end_time > ?", end_time, start_time)
          .none?
   end
 
@@ -58,7 +58,7 @@ class Match < ApplicationRecord
 
   def player_available?(player_id, start_time, end_time)
     Match.where("player1_id = ? OR player2_id = ?", player_id, player_id)
-         .where('start_time < ? AND end_time > ?', end_time, start_time)
+         .where("start_time < ? AND end_time > ?", end_time, start_time)
          .none?
   end
 end
