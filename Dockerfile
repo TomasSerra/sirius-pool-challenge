@@ -24,7 +24,7 @@ COPY . .
 RUN echo "$MASTER_KEY" > config/master.key
 
 # Precompilar assets
-RUN bundle exec rake assets:precompile
+RUN bundle exec rake assets:precompile --trace
 
 # Exponer el puerto 3000
 EXPOSE 3000
