@@ -1,14 +1,14 @@
 class PlayerService
-  def initialize(player_class: Player)
-    @player_class = player_class
+  def initialize(player_model: Player)
+    @player_model = player_model
   end
 
-  def get_all_players
-    @player_class.all
+  def get_all_players(filters = {}, scope_mapping = {})
+    Filters.new(@player_model.all, filters, scope_mapping).call
   end
 
   def get_player(id)
-    @player_class.find_by(id: id)
+    @player_model.find_by(id: id)
   end
 
   def create_player(player_data)
@@ -16,14 +16,14 @@ class PlayerService
     image_name = SecureRandom.uuid
     pp_image_url = generate_presigned_url("profile_pictures", image_name)
     player_data[:profile_picture_url] = "profile_pictures/#{image_name}"
-    player = @player_class.create!(player_data)
+    player = @player_model.create!(player_data)
     { player: player, presigned_url: pp_image_url }
   rescue ActiveRecord::RecordInvalid => e
     raise StandardError, "Player creation failed: #{e.message}"
   end
 
   def update_player(id, player_params)
-    player = @player_class.find_by(id: id)
+    player = @player_model.find_by(id: id)
     return nil unless player
 
     if player.update(player_params)
@@ -34,7 +34,7 @@ class PlayerService
   end
 
   def delete_player(id)
-    player = @player_class.find_by(id: id)
+    player = @player_model.find_by(id: id)
     return false unless player
 
     player.destroy

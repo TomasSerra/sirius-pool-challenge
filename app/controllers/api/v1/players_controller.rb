@@ -8,7 +8,11 @@ module Api
       end
 
       def index
-        players = @player_service.get_all_players
+        filters = params.slice(:name)
+        scope_mapping = {
+          name: :by_name
+        }
+        players = @player_service.get_all_players(filters, scope_mapping)
         render json: { data: { players: players } }
       end
 

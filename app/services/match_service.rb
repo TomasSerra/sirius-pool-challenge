@@ -1,20 +1,20 @@
 class MatchService
-  def initialize(match_class: Match)
-    @match_class = match_class
+  def initialize(match_model: Match)
+    @match_model = match_model
   end
 
-  def get_all_matches
-    @match_class.all
+  def get_all_matches(filters = {}, scope_mapping = {})
+    Filters.new(@match_model.all, filters, scope_mapping).call
   end
 
   def get_match(id)
-    @match_class.find_by(id: id)
+    @match_model.find_by(id: id)
   end
 
   def create_match(match_params)
-    @match_class.create!(match_params)
-  rescue ActiveRecord::RecordInvalid => e
-    raise StandardError, "Match creation failed: #{e.message}"
+    @match_model.create!(match_params)
+    rescue => e
+      raise StandardError, "Match creation failed: #{e.message}"
   end
 
   def update_match(match, match_params)
