@@ -15,8 +15,8 @@ RUN bundle install --without development test
 
 COPY . .
 
-RUN RAILS_ENV=production bundle exec rake assets:precompile
+RUN bundle exec rake assets:precompile
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "echo \"$RAILS_MASTER_KEY\" > config/master.key && bundle exec puma -C config/puma.rb"]
+CMD ["sh", "-c", "cp /etc/secrets/master.key config/master.key && bundle exec puma -C config/puma.rb"]
