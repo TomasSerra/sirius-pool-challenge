@@ -18,13 +18,15 @@ COPY Gemfile Gemfile.lock ./
 # Instalar las dependencias de Ruby
 RUN bundle install --without development test
 
+ENV RAILS_ENV=production
+
 # Copiar el resto del código
 COPY . .
 
 RUN echo "$MASTER_KEY" > config/master.key
 
-# Exponer el puerto 3000
+# Exponer el puerto 3000p
 EXPOSE 3000
 
 # Comando de inicio
-CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb", "--debug"]
