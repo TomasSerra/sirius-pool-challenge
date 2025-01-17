@@ -23,9 +23,6 @@ COPY . .
 
 RUN echo "$MASTER_KEY" > config/master.key
 
-# Instalar dependencias de Yarn
-RUN yarn install
-
 # Precompilar assets
 RUN bundle exec rake assets:precompile
 
