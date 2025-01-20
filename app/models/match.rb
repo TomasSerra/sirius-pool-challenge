@@ -22,9 +22,21 @@ class Match < ApplicationRecord
       end
     end
   }
+
   scope :upcoming, -> { where("start_time > ?", Time.current) }
   scope :ongoing, -> { where("start_time <= ? AND end_time >= ?", Time.current, Time.current) }
   scope :completed, -> { where("end_time < ?", Time.current) }
+
+  scope :with_status, ->(status) {
+    status_mapping = {
+      "upcoming" => :upcoming,
+      "ongoing" => :ongoing,
+      "completed" => :completed
+    }
+    if status_mapping[status]
+      public_send(status_mapping[status])
+    end
+  }
 
   private
 

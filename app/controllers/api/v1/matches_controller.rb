@@ -8,12 +8,10 @@ module Api
       end
 
       def index
-        filters = params.slice(:date, :upcoming, :ongoing, :completed)
+        filters = params.slice(:date, :status)
         scope_mapping = {
           date: :by_date,
-          upcoming: :upcoming,
-          ongoing: :ongoing,
-          completed: :completed
+          status: :with_status,
         }
         matches = @match_service.get_all_matches(filters, scope_mapping)
         render json: { data: { matches: matches } }
