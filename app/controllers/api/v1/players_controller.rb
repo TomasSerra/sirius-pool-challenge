@@ -52,7 +52,7 @@ module Api
       end
 
       def player_params
-        params.require(:player).permit(:name, :preferred_cue, :ranking, :profile_picture_url)
+        params.require(:player).permit(:name, :preferred_cue, :ranking, :profile_picture_url, :wins)
       end
     end
   end

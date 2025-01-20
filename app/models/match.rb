@@ -8,9 +8,14 @@ class Match < ApplicationRecord
   validates :table_number, presence: true
   validates :player1, presence: true
   validates :player2, presence: true
+
+  validate :players_are_different
+  validate :winner_is_valid
   validate :start_time_should_be_before_end_time
   validate :table_must_be_available
   validate :players_must_be_available
+
+  before_save :adjust_wins
 
   scope :by_date, ->(date_string) {
     if date_string.present?
@@ -47,14 +52,15 @@ class Match < ApplicationRecord
   end
 
   def table_must_be_available
-    unless table_available?(table_number, start_time, end_time)
+    unless table_available?(table_number, start_time, end_time, id)
       errors.add(:table_number, "is already occupied during this time")
     end
   end
 
-  def table_available?(table_number, start_time, end_time)
+  def table_available?(table_number, start_time, end_time, id)
     Match.where(table_number: table_number)
          .where("start_time < ? AND end_time > ?", end_time, start_time)
+         .where.not(id: id)
          .none?
   end
 
@@ -71,6 +77,42 @@ class Match < ApplicationRecord
   def player_available?(player_id, start_time, end_time)
     Match.where("player1_id = ? OR player2_id = ?", player_id, player_id)
          .where("start_time < ? AND end_time > ?", end_time, start_time)
+         .where.not(id: id)
          .none?
+  end
+
+  def adjust_wins
+    puts "Adjusting wins"
+    puts "Winner ID changed: #{winner_id_changed?}"
+    puts "Winner ID was: #{winner_id_was}"
+    puts "Winner ID: #{winner_id}"
+    puts "Player 1 ID: #{player1_id}"
+    puts "Player 2 ID: #{player2_id}"
+    wins_changed = false
+    if winner_id_changed? && winner_id_was.present?
+      previous_winner = Player.find_by(id: winner_id_was)
+      previous_winner.decrement!(:wins) if previous_winner
+      wins_changed = true if previous_winner
+    end
+    if winner_id.present?
+      new_winner = Player.find_by(id: winner_id)
+      new_winner.increment!(:wins) if new_winner
+      wins_changed = true if new_winner
+    end
+
+    # Update player rankings if wins have changed
+    UpdatePlayerRankingsJob.perform_later if wins_changed
+  end
+
+  def winner_is_valid
+    if winner_id.present? && (winner_id != player1_id && winner_id != player2_id)
+      errors.add("Winner must be one of the players")
+    end
+  end
+
+  def players_are_different
+    if player1_id == player2_id
+      errors.add(:player2_id, "must be different from player1")
+    end
   end
 end

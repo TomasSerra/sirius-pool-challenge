@@ -43,6 +43,8 @@ gem "rswag-api"
 gem "rswag-specs"
 gem "rspec-rails"
 
+gem "solid_queue"
+
 gem "overcommit"
 
 group :development, :test do
@@ -51,7 +53,6 @@ group :development, :test do
   gem "solid_cache"
   # Active Cable and Active Jobs
   gem "solid_cable"
-  gem "solid_queue"
 
   gem "brakeman", require: false
 

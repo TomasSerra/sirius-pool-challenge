@@ -13,6 +13,7 @@ class PlayerService
 
   def create_player(player_data)
     player_data[:ranking] ||= 0
+    player_data[:wins] ||= 0
     image_name = SecureRandom.uuid
     pp_image_url = generate_presigned_url("profile_pictures", image_name)
     player_data[:profile_picture_url] = "profile_pictures/#{image_name}"

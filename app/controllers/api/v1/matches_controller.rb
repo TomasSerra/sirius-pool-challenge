@@ -11,7 +11,7 @@ module Api
         filters = params.slice(:date, :status)
         scope_mapping = {
           date: :by_date,
-          status: :with_status,
+          status: :with_status
         }
         matches = @match_service.get_all_matches(filters, scope_mapping)
         render json: { data: { matches: matches } }
