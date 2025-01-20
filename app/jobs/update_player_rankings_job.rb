@@ -9,4 +9,3 @@ class UpdatePlayerRankingsJob < ApplicationJob
     end
   end
 end
-
