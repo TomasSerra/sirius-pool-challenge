@@ -1,6 +1,6 @@
 databases:
   - name: pool_manager_challenge
-    databaseName: postgres
+    databaseName: pool_manager_db
     user: admin
     plan: free
 
