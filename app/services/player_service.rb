@@ -11,12 +11,20 @@ class PlayerService
     @player_model.find_by(id: id)
   end
 
+  def get_player_with_pp(id)
+    player = get_player(id)
+    profile_picture_url = player[:profile_picture_url] if player
+    player[:profile_picture_url] = get_presigned_url(profile_picture_url) if player
+    player
+  end
+
   def create_player(player_data)
     player_data[:ranking] ||= 0
     player_data[:wins] ||= 0
     image_name = SecureRandom.uuid
-    pp_image_url = generate_presigned_url("profile_pictures", image_name)
-    player_data[:profile_picture_url] = "profile_pictures/#{image_name}"
+    path = "profile_pictures/#{image_name}"
+    pp_image_url = generate_presigned_url(path, image_name)
+    player_data[:profile_picture_url] = path
     player = @player_model.create!(player_data)
     { player: player, presigned_url: pp_image_url }
   rescue ActiveRecord::RecordInvalid => e
@@ -46,18 +54,21 @@ class PlayerService
 
   private
 
-  def generate_presigned_url(folder_name, file_name, expiration_time = 10.minute)
-    path = "#{folder_name}/#{file_name}"
-
+  def generate_presigned_url(path, file_name, expiration_time = 10.minute)
     blob = ActiveStorage::Blob.create_before_direct_upload!(
       key: path,
       filename: file_name,
       byte_size: 0,
       checksum: "no-checksum",
-      content_type: "application/octet-stream",
+      content_type: "image/png",
       metadata: { identified: true }
     )
 
     blob.service_url_for_direct_upload(expires_in: expiration_time)
+  end
+
+  def get_presigned_url(path, expiration_time = 10.minute)
+    blob = ActiveStorage::Blob.find_by(key: path)
+    blob.url(expires_in: expiration_time, disposition: "inline") if blob
   end
 end

@@ -17,20 +17,23 @@ module Api
       end
 
       def show
-        render json: { data: { player: @player } }
+        player = @player_service.get_player_with_pp(params[:id])
+        render json: { data: { player: player } }
+      rescue => e
+        render json: { error: e.message }, status: :unprocessable_content
       end
 
       def create
         response = @player_service.create_player(player_params)
         render json: { data: response }, status: :created
-      rescue StandardError => e
+      rescue => e
         render json: { error: e.message }, status: :unprocessable_content
       end
 
       def update
         player = @player_service.update_player(@player, player_params)
         render json: { data: { player: player } }
-      rescue StandardError => e
+      rescue => e
         render json: { error: e.message }, status: :unprocessable_content
       end
 
@@ -40,7 +43,7 @@ module Api
         else
           render json: { error: "Could not delete player" }, status: :unprocessable_content
         end
-      rescue StandardError => e
+      rescue => e
         render json: { error: e.message }, status: :unprocessable_content
       end
 

@@ -82,12 +82,6 @@ class Match < ApplicationRecord
   end
 
   def adjust_wins
-    puts "Adjusting wins"
-    puts "Winner ID changed: #{winner_id_changed?}"
-    puts "Winner ID was: #{winner_id_was}"
-    puts "Winner ID: #{winner_id}"
-    puts "Player 1 ID: #{player1_id}"
-    puts "Player 2 ID: #{player2_id}"
     wins_changed = false
     if winner_id_changed? && winner_id_was.present?
       previous_winner = Player.find_by(id: winner_id_was)
