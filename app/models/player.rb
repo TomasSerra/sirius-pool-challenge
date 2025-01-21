@@ -7,7 +7,7 @@ class Player < ApplicationRecord
   validates :profile_picture_url, presence: true
   validates :ranking, numericality: { only_integer: true }
 
-  after_create :recalculate_rankings
+  before_create :calculate_ranking
   after_update :recalculate_rankings_if_active_changed
 
   default_scope { where(active: true) }
@@ -17,11 +17,12 @@ class Player < ApplicationRecord
 
   def recalculate_rankings_if_active_changed
     if saved_change_to_attribute?(:active)
-      recalculate_rankings
+      UpdatePlayerRankingsJob.perform_later
     end
   end
 
-  def recalculate_rankings
-    UpdatePlayerRankingsJob.perform_later
+  def calculate_ranking
+    highest_ranking = Player.maximum(:ranking)
+    self.ranking = highest_ranking ? highest_ranking + 1 : 1
   end
 end
