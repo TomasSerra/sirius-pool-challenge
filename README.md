@@ -1,24 +1,61 @@
-# README
+# Pool Manager - Sirius Challenge
+## Description
+This project is a solution to the Sirius Challenge. The project is a pool manager that allows the user to create, update, delete and list players and matches. The project was developed using Ruby on Rails.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Setup & Installation
+To run the project, you need to have **Ruby** and **Rails** installed on your machine. You can follow the instructions on the [official website](https://guides.rubyonrails.org/getting_started.html#prerequisites) to install Ruby and Rails. 
 
-Things you may want to cover:
+### Versions
+- Ruby version: 3.4.1
+- Rails version: 8.0.1
+- PostgreSQL version: 1.1
+- Puma version: 5.0
 
-* Ruby version
+This app was created using ```rails new pool-manager-challenge --api```
 
-* System dependencies
+After installing Ruby and Rails, you can clone the repository and run the following commands to install the dependencies:
 
-* Configuration
+```bash
+bundle install
+```
 
-* Database creation
+## Database Setup
+The project uses PostgreSQL as the database. You need to have PostgreSQL installed on your machine. You can follow the instructions on the [official website](https://www.postgresql.org/download/) to install PostgreSQL.
 
-* Database initialization
+To create the database, you can run the following commands:
+```bash
+rails db:create
+rails db:migrate
+```
 
-* How to run the test suite
+## Environment Variables
+The project uses the ```dotenv``` gem to manage environment variables. You need to create a ```.env``` file in the root directory of the project and add the following variables:
 
-* Services (job queues, cache servers, search engines, etc.)
+### Database
+```
+DATABASE_PASSWORD
+DATABASE_URL
+```
 
-* Deployment instructions
+### Azure Blob Storage
+You need to create an Azure Storage Account and a container to store the blobs. You can follow the instructions on the [official documentation](https://docs.microsoft.com/en-us/azure/storage/blobs/).
+```
+AZURE_STORAGE_ACCOUNT_NAME
+AZURE_STORAGE_CONTAINER_NAME
+```
+You also need to add the Azure Storage Account key into Rails credentials. You can run the following command to edit the credentials:
+```bash
+EDITOR=<YOUR_EDITOR> bin/rails credentials:edit
+```
+Add the following lines to the credentials file:
+```yaml
+azure_storage:
+  storage_access_key: <YOUR_AZURE_STORAGE_ACCOUNT_KEY>
+```
 
-* ...
+## Running the Project
+After installing the dependencies, creating the database, and setting the environment variables, you can run the project using the following command:
+
+```bash
+rails s
+```
