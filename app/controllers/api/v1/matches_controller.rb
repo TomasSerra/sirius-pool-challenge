@@ -2,7 +2,7 @@ module Api
   module V1
     class MatchesController < ApplicationController
       before_action :set_match, only: [ :show, :update, :destroy ]
-      before_action :set_time_zone, only: [:index, :show, :create, :update, :destroy]
+      before_action :set_time_zone, only: [ :index, :show, :create, :update, :destroy ]
 
       def initialize(match_service: MatchService.new)
         @match_service = match_service

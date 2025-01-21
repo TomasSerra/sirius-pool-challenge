@@ -2,7 +2,7 @@ module Api
   module V1
     class PlayersController < ApplicationController
       before_action :set_player, only: [ :show, :update, :destroy ]
-      before_action :set_time_zone, only: [:index, :show, :create, :update, :destroy]
+      before_action :set_time_zone, only: [ :index, :show, :create, :update, :destroy ]
 
       def initialize(player_service: PlayerService.new)
         @player_service = player_service
