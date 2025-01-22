@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :players
       resources :matches
+      get "players/profile_picture/:id", to: "players#update_profile_picture"
     end
   end
 

@@ -47,6 +47,13 @@ module Api
         render_error(e)
       end
 
+      def update_profile_picture
+        presigned_url = @player_service.get_new_pp_presigned_url(params[:id])
+        render json: { data: { presigned_url: presigned_url } }
+      rescue => e
+        render_error(e)
+      end
+
       private
 
       def render_error(error)

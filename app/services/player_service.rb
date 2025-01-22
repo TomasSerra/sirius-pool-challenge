@@ -56,17 +56,25 @@ class PlayerService
     end
   end
 
+  def get_new_pp_presigned_url(player_id)
+    execute_with_error_handling do
+      player = get_player(player_id)
+      path = player[:profile_picture_url] if player
+      filename = path.split("/").last if path
+      generate_presigned_url(path, filename)
+    end
+  end
+
   private
 
   def generate_presigned_url(path, file_name, expiration_time = 10.minute)
-    blob = ActiveStorage::Blob.create_before_direct_upload!(
-      key: path,
-      filename: file_name,
-      byte_size: 0,
-      checksum: "no-checksum",
-      content_type: "image/png",
-      metadata: { identified: true }
-    )
+    blob = ActiveStorage::Blob.find_or_create_by!(key: path) do |new_blob|
+      new_blob.filename = file_name
+      new_blob.byte_size = 0
+      new_blob.checksum = "no-checksum"
+      new_blob.content_type = "image/png"
+      new_blob.metadata = { identified: true }
+    end
 
     blob.service_url_for_direct_upload(expires_in: expiration_time)
   end
