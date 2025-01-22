@@ -1,7 +1,6 @@
 module Api
   module V1
     class MatchesController < ApplicationController
-      before_action :set_match, only: [ :show, :update, :destroy ]
       before_action :set_time_zone, only: [ :index, :show, :create, :update, :destroy ]
 
       def initialize(match_service: MatchService.new)
@@ -9,51 +8,69 @@ module Api
       end
 
       def index
-        filters = params.slice(:date, :status)
+        filters = params.slice(:date, :status, :order)
         scope_mapping = {
           date: :by_date,
-          status: :with_status
+          status: :with_status,
+          order: :order_by
         }
         matches = @match_service.get_all_matches(filters, scope_mapping)
-        render json: { data: { matches: matches } }
+        render json: { data: { matches: matches } }, status: :ok
+      rescue => e
+        render_error(e)
       end
 
       def show
-        render json: { data: { match: @match } }
+        match = @match_service.get_match(params[:id])
+        render json: { data: { match: match } }, status: :ok
+      rescue => e
+        render_error(e)
       end
 
       def create
         match = @match_service.create_match(match_params)
         render json: { data: { match: match } }, status: :created
-      rescue StandardError => e
-        render json: { error: e.message }, status: :unprocessable_content
+      rescue => e
+        render_error(e)
       end
 
       def update
-        response = @match_service.update_match(@match, match_params)
-          render json: { data: { match: response } }
-      rescue StandardError => e
-        render json: { error: e.message }, status: :unprocessable_content
+        new_match = @match_service.update_match(params[:id], match_params)
+        render json: { data: { match: new_match } }, status: :ok
+      rescue => e
+        render_error(e)
       end
 
       def destroy
-        if @match_service.delete_match(@match)
-          head :no_content
-        else
-          render json: { error: "Could not delete match" }, status: :unprocessable_content
-        end
+        @match_service.delete_match(params[:id])
+        head :no_content
+      rescue => e
+        render_error(e)
       end
 
       private
 
+      def render_error(error)
+        if error.is_a?(HttpErrors::HTTPError)
+          render json: {
+            error: {
+              code: error.error_code,
+              message: error.message
+            }
+          }, status: error.status
+        else
+          render json: {
+            error: {
+              code: "internal_server_error",
+              message: error.message
+            }
+          }, status: :internal_server_error
+        end
+      end
+
       def set_time_zone
         @time_zone = request.headers["TimeZone"] || "UTC"
         Time.zone = @time_zone
-      end
-
-      def set_match
-        @match = @match_service.get_match(params[:id])
-        render json: { error: "Match not found" }, status: :not_found unless @match
       end
 
       def match_params

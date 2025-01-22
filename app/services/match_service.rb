@@ -1,35 +1,43 @@
+# app/services/match_service.rb
 class MatchService
+  include ErrorHandler
+
   def initialize(match_model: Match)
     @match_model = match_model
   end
 
   def get_all_matches(filters = {}, scope_mapping = {})
-    Filters.new(@match_model.all, filters, scope_mapping).call
-  end
-
-  def get_match(id)
-    @match_model.find_by(id: id)
-  end
-
-  def create_match(match_params)
-    @match_model.create!(match_params)
-    rescue => e
-      raise StandardError, "Match creation failed: #{e.message}"
-  end
-
-  def update_match(match, match_params)
-    return nil unless match
-
-    if match.update(match_params)
-      match
-    else
-      raise StandardError, "Match update failed: #{match.errors.full_messages.join(', ')}"
+    execute_with_error_handling do
+      Filters.new(@match_model.all, filters, scope_mapping).call
     end
   end
 
-  def delete_match(match)
-    return false unless match
+  def get_match(match_id)
+    execute_with_error_handling do
+      match = @match_model.find_by(id: match_id)
+      raise HttpErrors::NotFoundError.new("Match not found with ID #{match_id}") if match.nil?
+      match
+    end
+  end
 
-    match.destroy
+  def create_match(match_params)
+    execute_with_error_handling do
+      @match_model.create!(match_params)
+    end
+  end
+
+  def update_match(match_id, match_params)
+    execute_with_error_handling do
+      match = get_match(match_id)
+      match.update!(match_params)
+      match
+    end
+  end
+
+  def delete_match(match_id)
+    execute_with_error_handling do
+      match = get_match(match_id)
+      match.destroy!
+    end
   end
 end

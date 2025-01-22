@@ -1,54 +1,58 @@
 class PlayerService
+  include ErrorHandler
+
   def initialize(player_model: Player)
     @player_model = player_model
   end
 
   def get_all_players(filters = {}, scope_mapping = {})
-    Filters.new(@player_model.all, filters, scope_mapping).call
-  end
-
-  def get_player(id)
-    @player_model.find_by(id: id)
-  end
-
-  def get_player_with_pp(id)
-    player = get_player(id)
-    profile_picture_url = player[:profile_picture_url] if player
-    player[:profile_picture_url] = get_presigned_url(profile_picture_url) if player
-    player
-  end
-
-  def create_player(player_data)
-    player_data[:ranking] ||= 0
-    player_data[:wins] ||= 0
-    image_name = SecureRandom.uuid
-    path = "profile_pictures/#{image_name}"
-    pp_image_url = generate_presigned_url(path, image_name)
-    player_data[:profile_picture_url] = path
-    player = @player_model.create!(player_data)
-    { player: player, presigned_url: pp_image_url }
-  rescue ActiveRecord::RecordInvalid => e
-    raise StandardError, "Player creation failed: #{e.message}"
-  end
-
-  def update_player(id, player_params)
-    player = get_player(id)
-    return nil unless player
-
-    if player.update(player_params)
-      player
-    else
-      raise StandardError, "Player update failed: #{player.errors.full_messages.join(', ')}"
+    execute_with_error_handling do
+      Filters.new(@player_model.all, filters, scope_mapping).call
     end
   end
 
-  def delete_player(id)
-    player = get_player(id)
-    return false unless player
-    if player.update(active: false)
+  def get_player(id)
+    execute_with_error_handling do
+      player = @player_model.find_by(id: id)
+      raise HttpErrors::NotFoundError.new("Player not found with ID #{id}") if player.nil?
       player
-    else
-      raise StandardError, "Player delete failed: #{player.errors.full_messages.join(', ')}"
+    end
+  end
+
+  def get_player_with_pp(id)
+    execute_with_error_handling do
+      player = get_player(id)
+      profile_picture_url = player[:profile_picture_url] if player
+      player[:profile_picture_url] = get_presigned_url(profile_picture_url) if player
+      player
+    end
+  end
+
+  def create_player(player_data)
+    execute_with_error_handling do
+      player_data[:ranking] ||= 0
+      player_data[:wins] ||= 0
+      image_name = SecureRandom.uuid
+      path = "profile_pictures/#{image_name}"
+      pp_image_url = generate_presigned_url(path, image_name)
+      player_data[:profile_picture_url] = path
+      player = @player_model.create!(player_data)
+      { player: player, presigned_url: pp_image_url }
+    end
+  end
+
+  def update_player(player_id, player_params)
+    execute_with_error_handling do
+      player = get_player(player_id)
+      player.update!(player_params)
+      player
+    end
+  end
+
+  def delete_player(player_id)
+    execute_with_error_handling do
+      player = get_player(player_id)
+      player.update!(active: false)
     end
   end
 

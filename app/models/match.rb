@@ -16,6 +16,7 @@ class Match < ApplicationRecord
   validate :players_must_be_available
 
   before_save :adjust_wins
+  before_destroy :match_should_not_be_started
 
   scope :by_date, ->(date_string) {
     if date_string.present?
@@ -25,6 +26,14 @@ class Match < ApplicationRecord
         end_of_day = start_of_day.end_of_day
         where(start_time: start_of_day..end_of_day)
       end
+    end
+  }
+
+  scope :order_by, ->(order_type) {
+    if order_type.present?
+      direction = order_type.start_with?("-") ? :desc : :asc
+      field = order_type.delete_prefix("-")
+      order(field => direction)
     end
   }
 
@@ -113,6 +122,13 @@ class Match < ApplicationRecord
   def players_are_different
     if player1_id == player2_id
       errors.add(:player2_id, "must be different from player1")
+    end
+  end
+
+  def match_should_not_be_started
+    if start_time < Time.zone.now
+      errors.add("Match has already started")
+      throw(:abort)
     end
   end
 end

@@ -12,6 +12,13 @@ class Player < ApplicationRecord
 
   default_scope { where(active: true) }
   scope :by_name, ->(name) { where("name LIKE ?", "%#{name}%") if name.present? }
+  scope :order_by, ->(order_type) {
+    if order_type.present?
+      direction = order_type.start_with?("-") ? :desc : :asc
+      field = order_type.delete_prefix("-")
+      order(field => direction)
+    end
+  }
 
   private
 

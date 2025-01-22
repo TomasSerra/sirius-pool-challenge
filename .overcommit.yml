@@ -5,3 +5,4 @@ PreCommit:
     command: ['rubocop', '-a']
     after_all:
       - git add .
+      - git commit -m 'RuboCop autocorrect'
