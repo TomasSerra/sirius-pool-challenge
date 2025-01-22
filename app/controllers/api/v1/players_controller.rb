@@ -20,7 +20,7 @@ module Api
       end
 
       def show
-        player = @player_service.get_player_with_pp(params[:id])
+        player = @player_service.get_player(params[:id])
         render json: { data: { player: player } }
       rescue => e
         render_error(e)
@@ -80,7 +80,7 @@ module Api
       end
 
       def player_params
-        params.require(:player).permit(:name, :preferred_cue, :ranking, :profile_picture_url, :wins)
+        params.require(:player).permit(:name, :preferred_cue, :ranking, :wins)
       end
     end
   end

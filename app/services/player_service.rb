@@ -19,25 +19,22 @@ class PlayerService
     end
   end
 
-  def get_player_with_pp(id)
-    execute_with_error_handling do
-      player = get_player(id)
-      profile_picture_url = player[:profile_picture_url] if player
-      player[:profile_picture_url] = get_presigned_url(profile_picture_url) if player
-      player
-    end
-  end
-
   def create_player(player_data)
     execute_with_error_handling do
       player_data[:ranking] ||= 0
       player_data[:wins] ||= 0
+
       image_name = SecureRandom.uuid
       path = "profile_pictures/#{image_name}"
-      pp_image_url = generate_presigned_url(path, image_name)
-      player_data[:profile_picture_url] = path
+
+      blob_data = generate_presigned_url(path, image_name)
+      public_url = blob_data[:public_url]
+
+      player_data[:profile_picture_url] = public_url
+
       player = @player_model.create!(player_data)
-      { player: player, presigned_url: pp_image_url }
+
+      { player: player, presigned_url: blob_data[:presigned_url] }
     end
   end
 
@@ -59,9 +56,13 @@ class PlayerService
   def get_new_pp_presigned_url(player_id)
     execute_with_error_handling do
       player = get_player(player_id)
-      path = player[:profile_picture_url] if player
-      filename = path.split("/").last if path
-      generate_presigned_url(path, filename)
+      if player && player[:profile_picture_url]
+        path = URI.parse(player[:profile_picture_url]).path.sub(%r{^/[^/]+/}, "")
+        filename = path.split("/").last
+        generate_presigned_url(path, filename)[:presigned_url]
+      else
+        raise HttpErrors::NotFoundError.new("Profile picture URL not found for player #{player_id}")
+      end
     end
   end
 
@@ -76,7 +77,7 @@ class PlayerService
       new_blob.metadata = { identified: true }
     end
 
-    blob.service_url_for_direct_upload(expires_in: expiration_time)
+    { presigned_url: blob.service_url_for_direct_upload(expires_in: expiration_time), public_url: blob.url }
   end
 
   def get_presigned_url(path, expiration_time = 10.minute)
