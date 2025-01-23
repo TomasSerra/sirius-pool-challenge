@@ -1,5 +1,6 @@
 class PlayerService
   include ErrorHandler
+  include ActiveStorageManager
 
   def initialize(player_model: Player)
     @player_model = player_model
@@ -64,24 +65,5 @@ class PlayerService
         raise HttpErrors::NotFoundError.new("Profile picture URL not found for player #{player_id}")
       end
     end
-  end
-
-  private
-
-  def generate_presigned_url(path, file_name, expiration_time = 10.minute)
-    blob = ActiveStorage::Blob.find_or_create_by!(key: path) do |new_blob|
-      new_blob.filename = file_name
-      new_blob.byte_size = 0
-      new_blob.checksum = "no-checksum"
-      new_blob.content_type = "image/png"
-      new_blob.metadata = { identified: true }
-    end
-
-    { presigned_url: blob.service_url_for_direct_upload(expires_in: expiration_time), public_url: blob.url }
-  end
-
-  def get_presigned_url(path, expiration_time = 10.minute)
-    blob = ActiveStorage::Blob.find_by(key: path)
-    blob.url(expires_in: expiration_time, disposition: "inline") if blob
   end
 end

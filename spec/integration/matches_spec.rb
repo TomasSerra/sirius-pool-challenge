@@ -335,7 +335,7 @@ RSpec.describe 'Matches', type: :request, openapi: 'v1/swagger.yaml' do
     delete('Delete match') do
       tags 'Matches'
 
-      let!(:delete_match) do
+      let(:delete_match) do
         create(:match,
                player1_id: player1.id,
                player2_id: player2.id,
