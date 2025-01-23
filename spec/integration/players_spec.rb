@@ -5,6 +5,8 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
     get('List players') do
       tags 'Players'
       produces 'application/json'
+      parameter name: :order, in: :query, type: :string, description: 'Order players by any field (e.g., "name", "-name", "ranking", "-ranking", etc)'
+      parameter name: :name, in: :query, type: :string, description: 'Search players by partial name (e.g., "John")'
 
       response(200, 'ok') do
         schema type: :object,

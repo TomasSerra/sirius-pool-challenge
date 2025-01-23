@@ -9,6 +9,24 @@ paths:
       summary: List matches
       tags:
       - Matches
+      parameters:
+      - name: order
+        in: query
+        description: Order matches by any field (e.g., "start_time", "-start_time",
+          "end_time", "-end_time", etc.)
+        schema:
+          type: string
+      - name: date
+        in: query
+        format: date
+        description: Filter matches by a specific date (e.g., "2025-01-21")
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Filter matches by status (e.g., "completed", "ungoing", "upcoming")
+        schema:
+          type: string
       responses:
         '200':
           description: ok
@@ -326,6 +344,18 @@ paths:
       summary: List players
       tags:
       - Players
+      parameters:
+      - name: order
+        in: query
+        description: Order players by any field (e.g., "name", "-name", "ranking",
+          "-ranking", etc)
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Search players by partial name (e.g., "John")
+        schema:
+          type: string
       responses:
         '200':
           description: ok

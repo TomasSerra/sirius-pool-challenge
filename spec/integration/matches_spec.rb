@@ -24,6 +24,10 @@ RSpec.describe 'Matches', type: :request, openapi: 'v1/swagger.yaml' do
       tags 'Matches'
       produces 'application/json'
 
+      parameter name: :order, in: :query, type: :string, description: 'Order matches by any field (e.g., "start_time", "-start_time", "end_time", "-end_time", etc.)'
+      parameter name: :date, in: :query, type: :string, format: 'date', description: 'Filter matches by a specific date (e.g., "2025-01-21")'
+      parameter name: :status, in: :query, type: :string, description: 'Filter matches by status (e.g., "completed", "ungoing", "upcoming")'
+
       response(200, 'ok') do
         schema type: :object,
                properties: {
