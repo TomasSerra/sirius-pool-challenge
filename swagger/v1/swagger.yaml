@@ -11,7 +11,7 @@ paths:
       - Matches
       responses:
         '200':
-          description: successful
+          description: ok
           content:
             application/json:
               schema:
@@ -42,14 +42,12 @@ paths:
                               nullable: true
                             table_number:
                               type: integer
-                          required:
-                          - id
-                          - player1_id
-                          - player2_id
-                          - start_time
-                          - table_number
-                    required:
-                    - matches
+                            created_at:
+                              type: string
+                              format: date-time
+                            updated_at:
+                              type: string
+                              format: date-time
     post:
       summary: Create match
       tags:
@@ -86,16 +84,40 @@ paths:
                             nullable: true
                           table_number:
                             type: integer
-                        required:
-                        - id
-                        - player1_id
-                        - player2_id
-                        - start_time
-                        - table_number
-                    required:
-                    - matches
-        '422':
-          description: unprocessable entity
+                          created_at:
+                            type: string
+                            format: date-time
+                          updated_at:
+                            type: string
+                            format: date-time
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+        '409':
+          description: conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
       requestBody:
         content:
           application/json:
@@ -136,9 +158,55 @@ paths:
       - Matches
       responses:
         '200':
-          description: successful
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      match:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          player1_id:
+                            type: integer
+                          player2_id:
+                            type: integer
+                          start_time:
+                            type: string
+                            format: date-time
+                          end_time:
+                            type: string
+                            format: date-time
+                          winner_id:
+                            type: integer
+                            nullable: true
+                          table_number:
+                            type: integer
+                          created_at:
+                            type: string
+                            format: date-time
+                          updated_at:
+                            type: string
+                            format: date-time
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
     put:
       summary: Update match
       tags:
@@ -146,9 +214,83 @@ paths:
       parameters: []
       responses:
         '200':
-          description: successful
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      match:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          player1_id:
+                            type: integer
+                          player2_id:
+                            type: integer
+                          start_time:
+                            type: string
+                            format: date-time
+                          end_time:
+                            type: string
+                            format: date-time
+                          winner_id:
+                            type: integer
+                            nullable: true
+                          table_number:
+                            type: integer
+                          created_at:
+                            type: string
+                            format: date-time
+                          updated_at:
+                            type: string
+                            format: date-time
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+        '409':
+          description: conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
       requestBody:
         content:
           application/json:
@@ -186,7 +328,7 @@ paths:
       - Players
       responses:
         '200':
-          description: successful
+          description: ok
           content:
             application/json:
               schema:
@@ -210,6 +352,12 @@ paths:
                               type: string
                             preferred_cue:
                               type: string
+                            created_at:
+                              type: string
+                              format: date-time
+                            updated_at:
+                              type: string
+                              format: date-time
                           required:
                           - id
                           - name
@@ -241,10 +389,18 @@ paths:
                             type: string
                           ranking:
                             type: integer
+                          wins:
+                            type: integer
                           profile_picture_url:
                             type: string
                           preferred_cue:
                             type: string
+                          created_at:
+                            type: string
+                            format: date-time
+                          updated_at:
+                            type: string
+                            format: date-time
                         required:
                         - id
                         - name
@@ -252,9 +408,49 @@ paths:
                       presigned_url:
                         type: string
                     required:
-                    - players
-        '422':
-          description: unprocessable entity
+                    - player
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+        '409':
+          description: conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
       requestBody:
         content:
           application/json:
@@ -265,8 +461,6 @@ paths:
                   type: string
                 ranking:
                   type: integer
-                profile_picture_url:
-                  type: string
                 preferred_cue:
                   type: string
               required:
@@ -286,9 +480,52 @@ paths:
       - Players
       responses:
         '200':
-          description: successful
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      player:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          ranking:
+                            type: integer
+                          wins:
+                            type: integer
+                          profile_picture_url:
+                            type: string
+                          preferred_cue:
+                            type: string
+                          created_at:
+                            type: string
+                            format: date-time
+                          updated_at:
+                            type: string
+                            format: date-time
+                      presigned_url:
+                        type: string
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
     put:
       summary: Update player
       tags:
@@ -296,9 +533,56 @@ paths:
       parameters: []
       responses:
         '200':
-          description: successful
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      player:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          ranking:
+                            type: integer
+                          wins:
+                            type: integer
+                          profile_picture_url:
+                            type: string
+                          preferred_cue:
+                            type: string
+                          created_at:
+                            type: string
+                            format: date-time
+                          updated_at:
+                            type: string
+                            format: date-time
+                        required:
+                        - id
+                        - name
+                        - profile_picture_url
+                    required:
+                    - player
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
       requestBody:
         content:
           application/json:
@@ -308,6 +592,8 @@ paths:
                 name:
                   type: string
                 ranking:
+                  type: integer
+                wins:
                   type: integer
                 profile_picture_url:
                   type: string
@@ -322,8 +608,47 @@ paths:
           description: no content
         '404':
           description: not found
+  "/api/v1/players/profile_picture/{id}":
+    get:
+      summary: Get new profile picture presigned url
+      parameters:
+      - name: id
+        in: path
+        description: Player ID
+        required: true
+        schema:
+          type: integer
+      tags:
+      - Players
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      presigned_url:
+                        type: string
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
 servers:
 - url: http://localhost:3000
-  variables:
-    defaultHost:
-      default: localhost:3000
+  description: Local server
+- url: https://sirius-pool-challenge-oswn.onrender.com
+  description: Prod server

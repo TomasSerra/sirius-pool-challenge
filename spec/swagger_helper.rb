@@ -23,11 +23,11 @@ RSpec.configure do |config|
       servers: [
         {
           url: 'http://localhost:3000',
-          variables: {
-            defaultHost: {
-              default: 'localhost:3000'
-            }
-          }
+          description: 'Local server'
+        },
+        {
+          url: 'https://sirius-pool-challenge-oswn.onrender.com',
+          description: 'Prod server'
         }
       ]
     }

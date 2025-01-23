@@ -6,7 +6,7 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
       tags 'Players'
       produces 'application/json'
 
-      response(200, 'successful') do
+      response(200, 'ok') do
         schema type: :object,
                properties: {
                  data: {
@@ -21,7 +21,9 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
                            name: { type: :string },
                            ranking: { type: :integer },
                            profile_picture_url: { type: :string },
-                           preferred_cue: { type: :string }
+                           preferred_cue: { type: :string },
+                           created_at: { type: :string, format: 'date-time' },
+                           updated_at: { type: :string, format: 'date-time' }
                          },
                          required: %w[id name profile_picture_url]
                        }
@@ -45,7 +47,6 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
         properties: {
           name: { type: :string },
           ranking: { type: :integer },
-          profile_picture_url: { type: :string },
           preferred_cue: { type: :string }
         },
         required: %w[name profile_picture_url]
@@ -63,23 +64,66 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
                            id: { type: :integer },
                            name: { type: :string },
                            ranking: { type: :integer },
+                           wins: { type: :integer },
                            profile_picture_url: { type: :string },
-                           preferred_cue: { type: :string }
+                           preferred_cue: { type: :string },
+                           created_at: { type: :string, format: 'date-time' },
+                           updated_at: { type: :string, format: 'date-time' }
                          },
                          required: %w[id name profile_picture_url]
                      },
                      presigned_url: { type: :string }
                    },
-                   required: %w[players]
+                   required: %w[player]
                  }
                }
 
-        let!(:player) { create(:player, :with_name_and_preferred_cue) }
+        let(:player) { { name: 'Name', preferred_cue: 'Cue' } }
         run_test!
       end
 
-      response(422, 'unprocessable entity') do
-        let(:player) { { name: '' } }
+      response(400, 'bad request') do
+        schema type: :object,
+               properties: {
+                 error: {
+                   type: :object,
+                   properties: {
+                     code: { type: :string },
+                     message: { type: :string }
+                   }
+                 }
+               }
+        let(:player) { {} }
+        run_test!
+      end
+
+      response(409, 'conflict') do
+        schema type: :object,
+               properties: {
+                 error: {
+                   type: :object,
+                   properties: {
+                     code: { type: :string },
+                     message: { type: :string }
+                   }
+                 }
+               }
+        let(:player) { { preferred_cue: 'Cue' } }
+        run_test!
+      end
+
+      response(500, 'internal server error') do
+        schema type: :object,
+               properties: {
+                 error: {
+                   type: :object,
+                   properties: {
+                     code: { type: :string },
+                     message: { type: :string }
+                   }
+                 }
+               }
+        let(:player) { { name: 'Name', preferred_cue: 'Cue', active: false } }
         run_test!
       end
     end
@@ -94,12 +138,44 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
 
       let!(:player) { create(:player) }
 
-      response(200, 'successful') do
+      response(200, 'ok') do
+        schema type: :object,
+               properties: {
+                 data: {
+                   type: :object,
+                   properties: {
+                     player: {
+                       type: :object,
+                       properties: {
+                         id: { type: :integer },
+                         name: { type: :string },
+                         ranking: { type: :integer },
+                         wins: { type: :integer },
+                         profile_picture_url: { type: :string },
+                         preferred_cue: { type: :string },
+                         created_at: { type: :string, format: 'date-time' },
+                         updated_at: { type: :string, format: 'date-time' }
+                       }
+                     },
+                     presigned_url: { type: :string }
+                   }
+                 }
+               }
         let(:id) { player.id }
         run_test!
       end
 
       response(404, 'not found') do
+        schema type: :object,
+               properties: {
+                 error: {
+                   type: :object,
+                   properties: {
+                     code: { type: :string },
+                     message: { type: :string }
+                   }
+                 }
+               }
         let(:id) { 900 }
         run_test!
       end
@@ -110,11 +186,12 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
       consumes 'application/json'
       produces 'application/json'
 
-      parameter name: :player, in: :body, schema: {
+      parameter name: :player_params, in: :body, schema: {
         type: :object,
         properties: {
           name: { type: :string },
           ranking: { type: :integer },
+          wins: { type: :integer },
           profile_picture_url: { type: :string },
           preferred_cue: { type: :string }
         }
@@ -122,28 +199,83 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
 
       let!(:player) { create(:player) }
 
-      response(200, 'successful') do
+      response(200, 'ok') do
+        schema type: :object,
+                properties: {
+                  data: {
+                    type: :object,
+                    properties: {
+                      player: {
+                        type: :object,
+                        properties: {
+                          id: { type: :integer },
+                          name: { type: :string },
+                          ranking: { type: :integer },
+                          wins: { type: :integer },
+                          profile_picture_url: { type: :string },
+                          preferred_cue: { type: :string },
+                          created_at: { type: :string, format: 'date-time' },
+                          updated_at: { type: :string, format: 'date-time' }
+                        },
+                        required: %w[id name profile_picture_url]
+                      }
+                    },
+                    required: %w[player]
+                  }
+                }
         let(:id) { player.id }
         let(:player_params) do
           {
             name: 'Name Updated',
             ranking: 1,
-            preferred_cue: 'Another Cue'
+            preferred_cue: 'Another Cue',
+            wins: 1
           }
         end
         run_test!
       end
 
       response(404, 'not found') do
+        schema type: :object,
+               properties: {
+                 error: {
+                   type: :object,
+                   properties: {
+                     code: { type: :string },
+                     message: { type: :string }
+                   }
+                 }
+               }
         let(:id) { 900 }
         let(:player_params) do
           {
             name: 'Name Updated',
             ranking: 1,
-            preferred_cue: 'Another Cue'
+            preferred_cue: 'Another Cue',
+            wins: 1
           }
         end
         run_test!
+      end
+
+      response(500, 'internal server error') do
+        schema type: :object,
+               properties: {
+                 error: {
+                   type: :object,
+                   properties: {
+                     code: { type: :string },
+                     message: { type: :string }
+                   }
+                 }
+               }
+        let(:id) { player.id }
+        let(:player_params) do
+          {
+            name: 'Name Updated',
+            active: false
+          }
+        end
       end
     end
 
@@ -158,6 +290,55 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
       end
 
       response(404, 'not found') do
+        schema type: :object,
+               properties: {
+                 error: {
+                   type: :object,
+                   properties: {
+                     code: { type: :string },
+                     message: { type: :string }
+                   }
+                 }
+               }
+        let(:id) { 900 }
+        run_test!
+      end
+    end
+  end
+
+  path('/api/v1/players/profile_picture/{id}') do
+    get('Get new profile picture presigned url') do
+      parameter name: :id, in: :path, type: :integer, description: 'Player ID'
+      tags 'Players'
+      produces 'application/json'
+
+      let!(:player) { create(:player) }
+
+      response(200, 'successful') do
+        schema type: :object,
+                properties: {
+                  data: {
+                    type: :object,
+                    properties: {
+                      presigned_url: { type: :string }
+                    }
+                  }
+                }
+        let(:id) { player.id }
+        run_test!
+      end
+
+      response(404, 'not found') do
+        schema type: :object,
+               properties: {
+                 error: {
+                   type: :object,
+                   properties: {
+                     code: { type: :string },
+                     message: { type: :string }
+                   }
+                 }
+               }
         let(:id) { 900 }
         run_test!
       end

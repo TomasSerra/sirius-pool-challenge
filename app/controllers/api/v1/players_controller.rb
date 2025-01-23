@@ -1,6 +1,7 @@
 module Api
   module V1
     class PlayersController < ApplicationController
+      include ActiveStorage::SetCurrent
       before_action :set_time_zone, only: [ :index, :show, :create, :update, :destroy ]
 
       def initialize(player_service: PlayerService.new)
@@ -14,28 +15,32 @@ module Api
           order: :order_by
         }
         players = @player_service.get_all_players(filters, scope_mapping)
-        render json: { data: { players: players } }
+        serialized_players = ActiveModelSerializers::SerializableResource.new(players, each_serializer: PlayerSerializer)
+        render json: { data: { players: serialized_players } }, status: :ok
       rescue => e
         render_error(e)
       end
 
       def show
         player = @player_service.get_player(params[:id])
-        render json: { data: { player: player } }
+        serialized_player = PlayerSerializer.new(player).serializable_hash
+        render json: { data: { player: serialized_player } }, status: :ok
       rescue => e
         render_error(e)
       end
 
       def create
         response = @player_service.create_player(player_params)
-        render json: { data: response }, status: :created
+        serialized_player = PlayerSerializer.new(response[:player]).serializable_hash
+        render json: { data: { player: serialized_player, presigned_url: response[:presigned_url] } }, status: :created
       rescue => e
         render_error(e)
       end
 
       def update
         player = @player_service.update_player(params[:id], player_params)
-        render json: { data: { player: player } }
+        serialized_player = PlayerSerializer.new(player).serializable_hash
+        render json: { data: { player: serialized_player } }, status: :ok
       rescue => e
         render_error(e)
       end
@@ -49,7 +54,7 @@ module Api
 
       def update_profile_picture
         presigned_url = @player_service.get_new_pp_presigned_url(params[:id])
-        render json: { data: { presigned_url: presigned_url } }
+        render json: { data: { presigned_url: presigned_url } }, status: :ok
       rescue => e
         render_error(e)
       end
@@ -64,6 +69,13 @@ module Api
               message: error.message
             }
           }, status: error.status
+        elsif error.is_a?(ActionController::ParameterMissing)
+          render json: {
+            error: {
+              code: "bad_request",
+              message: "Required parameter is missing: #{error.param}"
+            }
+          }, status: :bad_request
         else
           render json: {
             error: {

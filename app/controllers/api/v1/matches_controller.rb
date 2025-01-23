@@ -15,28 +15,32 @@ module Api
           order: :order_by
         }
         matches = @match_service.get_all_matches(filters, scope_mapping)
-        render json: { data: { matches: matches } }, status: :ok
+        serialized_matches = ActiveModelSerializers::SerializableResource.new(matches, each_serializer: MatchSerializer)
+        render json: { data: { matches: serialized_matches } }, status: :ok
       rescue => e
         render_error(e)
       end
 
       def show
         match = @match_service.get_match(params[:id])
-        render json: { data: { match: match } }, status: :ok
+        serialized_match = MatchSerializer.new(match).serializable_hash
+        render json: { data: { match: serialized_match } }, status: :ok
       rescue => e
         render_error(e)
       end
 
       def create
         match = @match_service.create_match(match_params)
-        render json: { data: { match: match } }, status: :created
+        serialized_match = MatchSerializer.new(match).serializable_hash
+        render json: { data: { match: serialized_match } }, status: :created
       rescue => e
         render_error(e)
       end
 
       def update
         new_match = @match_service.update_match(params[:id], match_params)
-        render json: { data: { match: new_match } }, status: :ok
+        serialized_match = MatchSerializer.new(new_match).serializable_hash
+        render json: { data: { match: serialized_match } }, status: :ok
       rescue => e
         render_error(e)
       end

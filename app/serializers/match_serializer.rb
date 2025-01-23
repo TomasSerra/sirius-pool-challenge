@@ -1,3 +1,3 @@
 class MatchSerializer < ActiveModel::Serializer
-  attributes :id, :player1_id, :player2_id, :start_time, :end_time, :winner_id, :table_number
+  attributes :id, :player1_id, :player2_id, :start_time, :end_time, :winner_id, :table_number, :created_at, :updated_at
 end

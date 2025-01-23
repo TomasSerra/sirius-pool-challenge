@@ -38,6 +38,10 @@ RSpec.configure do |config|
     Rails.root.join('spec/fixtures')
   ]
 
+  config.before(:each) do
+    ActiveStorage::Current.url_options = { protocol: 'http', host: 'localhost', port: 3000 }
+  end
+
   config.include FactoryBot::Syntax::Methods
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your

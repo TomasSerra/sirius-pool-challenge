@@ -12,7 +12,6 @@ module HttpErrors
     private
 
     def format_message(message)
-      Rails.logger.debug "Original message: #{message}"
       message.gsub("\n", " ").gsub("\r", "")
     end
   end

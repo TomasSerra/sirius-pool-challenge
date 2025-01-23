@@ -61,6 +61,9 @@ class Match < ApplicationRecord
   private
 
   def start_time_should_be_before_end_time
+    if start_time.nil? || end_time.nil?
+      return
+    end
     if start_time >= end_time
       errors.add(:start_time, "must be earlier than end time")
     end
