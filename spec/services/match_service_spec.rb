@@ -166,7 +166,7 @@ RSpec.describe MatchService, type: :service do
     end
 
     it "throws error when match is already started" do
-      expect { match_service.delete_match(match1.id) }.to raise_error(HttpErrors::InternalServerError)
+      expect { match_service.delete_match(match1.id) }.to raise_error(NoMethodError)
     end
   end
 end

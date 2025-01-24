@@ -237,7 +237,6 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
         let(:player_params) do
           {
             name: 'Name Updated',
-            ranking: 1,
             preferred_cue: 'Another Cue',
             wins: 1
           }
@@ -260,7 +259,6 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
         let(:player_params) do
           {
             name: 'Name Updated',
-            ranking: 1,
             preferred_cue: 'Another Cue',
             wins: 1
           }
