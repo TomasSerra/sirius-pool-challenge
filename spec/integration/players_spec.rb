@@ -8,6 +8,14 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
       parameter name: :order, in: :query, type: :string, description: 'Order players by any field (e.g., "name", "-name", "ranking", "-ranking", etc)'
       parameter name: :name, in: :query, type: :string, description: 'Search players by partial name (e.g., "John")'
 
+      let(:order) { nil }
+      let(:name) { nil }
+      let(:params) { { order: order, name: name }.compact }
+
+      before do
+        get '/api/v1/players', params: params
+      end
+
       response(200, 'ok') do
         schema type: :object,
                properties: {

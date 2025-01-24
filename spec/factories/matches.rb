@@ -5,7 +5,7 @@ FactoryBot.define do
     player2_id { Faker::Number.unique.within(range: 1..9_223_372_036_854_775_807) }
     start_time { Faker::Time.between(from: DateTime.now - 1, to: DateTime.now) }
     end_time { Faker::Time.between(from: DateTime.now, to: DateTime.now + 1) }
-    winner_id { Faker::Number.unique.within(range: 1..9_223_372_036_854_775_807) }
+    winner_id { nil }
     table_number { Faker::Number.between(from: 1, to: 100) }
   end
 end

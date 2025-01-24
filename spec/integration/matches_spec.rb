@@ -27,6 +27,14 @@ RSpec.describe 'Matches', type: :request, openapi: 'v1/swagger.yaml' do
       parameter name: :order, in: :query, type: :string, description: 'Order matches by any field (e.g., "start_time", "-start_time", "end_time", "-end_time", etc.)'
       parameter name: :date, in: :query, type: :string, format: 'date', description: 'Filter matches by a specific date (e.g., "2025-01-21")'
       parameter name: :status, in: :query, type: :string, description: 'Filter matches by status (e.g., "completed", "ungoing", "upcoming")'
+      let(:order) { nil }
+      let(:date) { nil }
+      let(:status) { nil }
+      let(:params) { { order: order, date: date, status: status }.compact }
+
+      before do
+        get '/api/v1/matches', params: params
+      end
 
       response(200, 'ok') do
         schema type: :object,
@@ -339,8 +347,8 @@ RSpec.describe 'Matches', type: :request, openapi: 'v1/swagger.yaml' do
         create(:match,
                player1_id: player1.id,
                player2_id: player2.id,
-               start_time: "2012-01-17T04:00:00.0Z",
-               end_time: "2012-01-17T05:00:00.0Z",
+               start_time: "2500-01-17T04:00:00.0Z",
+               end_time: "2500-01-17T05:00:00.0Z",
                winner_id: player1.id)
       end
 
