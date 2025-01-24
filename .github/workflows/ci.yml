@@ -68,9 +68,9 @@ jobs:
 
       - name: Prepare database
         run: |
-          rails db:create db:migrate
+          bundle exec rails db:create db:migrate
 
       - name: Run tests
         env:
           RAILS_ENV: test
-        run: bin/rspec
+        run: bundle exec rspec
