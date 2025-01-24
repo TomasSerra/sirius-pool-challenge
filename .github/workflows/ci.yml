@@ -63,8 +63,14 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Install dependencies
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Prepare database
+        run: |
+          rails db:create db:migrate
+
       - name: Run tests
         env:
           RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432
         run: bin/rspec
