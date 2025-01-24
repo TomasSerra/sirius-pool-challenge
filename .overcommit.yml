@@ -3,6 +3,7 @@ PreCommit:
     enabled: true
     on_warn: fail
     command: ['rubocop', '-a']
-    after_all:
-      - git add .
-      - git commit -m 'RuboCop autocorrect'
+  Tests:
+    enabled: true
+    on_warn: fail
+    command: ['rspec']
