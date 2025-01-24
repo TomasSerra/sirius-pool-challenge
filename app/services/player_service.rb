@@ -50,6 +50,8 @@ class PlayerService
   def delete_player(player_id)
     execute_with_error_handling do
       player = get_player(player_id)
+      profile_picture_path = URI.parse(player.profile_picture_url).path.sub(%r{^/[^/]+/}, "")
+      delete_blob(profile_picture_path)
       player.update!(active: false)
     end
   end

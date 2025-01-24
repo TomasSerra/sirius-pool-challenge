@@ -10,4 +10,12 @@ module ActiveStorageManager
 
     { presigned_url: blob.service_url_for_direct_upload(expires_in: expiration_time), public_url: blob.url }
   end
+
+  def delete_blob(path)
+    blob = ActiveStorage::Blob.find_by(key: path)
+    if blob.nil?
+      return
+    end
+    blob.purge
+  end
 end
