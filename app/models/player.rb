@@ -28,6 +28,10 @@ class Player < ApplicationRecord
     end
   end
 
+  def recalculate_rankings
+    UpdatePlayerRankingsJob.perform_later
+  end
+
   def calculate_ranking
     highest_ranking = Player.maximum(:ranking)
     self.ranking = highest_ranking ? highest_ranking + 1 : 1

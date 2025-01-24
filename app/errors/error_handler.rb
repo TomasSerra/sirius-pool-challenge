@@ -23,7 +23,7 @@ module ErrorHandler
     rescue ActiveRecord::NotNullViolation => e
       raise HttpErrors::UnprocessableEntityError.new("Null value not allowed: #{e.message}")
     rescue ActiveRecord::RecordNotDestroyed => e
-      raise HttpErrors::InternalServerError.new("Failed to destroy record: #{e.message}")
+      raise HttpErrors::InternalServerError.new("Failed to destroy record: #{e.record.errors.full_messages.join('; ')}}")
     rescue HttpErrors::NotFoundError => e
       raise e
     rescue => e

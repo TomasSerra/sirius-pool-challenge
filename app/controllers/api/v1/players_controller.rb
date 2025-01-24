@@ -92,7 +92,7 @@ module Api
       end
 
       def player_params
-        params.require(:player).permit(:name, :preferred_cue, :ranking, :wins)
+        params.require(:player).permit(:name, :preferred_cue, :wins)
       end
     end
   end
