@@ -33,7 +33,12 @@ class Player < ApplicationRecord
   end
 
   def calculate_ranking
-    highest_ranking = Player.maximum(:ranking)
-    self.ranking = highest_ranking ? highest_ranking + 1 : 1
+    if wins > 0
+      self.ranking = 0
+      recalculate_rankings
+    else
+      highest_ranking = Player.maximum(:ranking)
+      self.ranking = highest_ranking ? highest_ranking + 1 : 1
+    end
   end
 end

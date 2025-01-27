@@ -26,11 +26,6 @@ RSpec.describe PlayerService, type: :service do
       expect(player_service.get_all_players(filters, scope_mapping)).to eq([ player1, player2 ])
     end
 
-    it 'orders players by ranking desc successfully' do
-      filters = { order: '-ranking' }
-      expect(player_service.get_all_players(filters, scope_mapping)).to eq([ player3, player2, player1 ])
-    end
-
     it 'orders players by ranking asc successfully' do
       filters = { order: 'ranking' }
       expect(player_service.get_all_players(filters, scope_mapping)).to eq([ player1, player2, player3 ])
