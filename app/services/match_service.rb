@@ -29,7 +29,9 @@ class MatchService
   def update_match(match_id, match_params)
     execute_with_error_handling do
       match = get_match(match_id)
-      match.update!(match_params)
+      updated_attributes = match.attributes.symbolize_keys.merge(match_params)
+      match.assign_attributes(updated_attributes)
+      match.save!
       match
     end
   end
