@@ -106,7 +106,7 @@ class Match < ApplicationRecord
       previous_winner.decrement!(:wins) if previous_winner
       wins_changed = true if previous_winner
     end
-    if winner_id.present?
+    if winner_id_changed? && winner_id.present?
       new_winner = Player.find_by(id: winner_id)
       new_winner.increment!(:wins) if new_winner
       wins_changed = true if new_winner

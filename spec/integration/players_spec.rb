@@ -56,10 +56,9 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
         type: :object,
         properties: {
           name: { type: :string },
-          ranking: { type: :integer },
           preferred_cue: { type: :string }
         },
-        required: %w[name profile_picture_url]
+        required: %w[name preferred_cue]
       }
 
       response(201, 'created') do

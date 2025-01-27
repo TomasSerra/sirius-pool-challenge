@@ -24,7 +24,7 @@ paths:
           type: string
       - name: status
         in: query
-        description: Filter matches by status (e.g., "completed", "ungoing", "upcoming")
+        description: Filter matches by status (e.g., "completed", "ongoing", "upcoming")
         schema:
           type: string
       responses:
@@ -489,13 +489,11 @@ paths:
               properties:
                 name:
                   type: string
-                ranking:
-                  type: integer
                 preferred_cue:
                   type: string
               required:
               - name
-              - profile_picture_url
+              - preferred_cue
   "/api/v1/players/{id}":
     parameters:
     - name: id
