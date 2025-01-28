@@ -5,7 +5,7 @@ class Player < ApplicationRecord
 
   validates :name, presence: true
   validates :profile_picture_url, presence: true
-  validates :ranking, numericality: { only_integer: true }
+  validates :ranking, numericality: { only_integer: true }, allow_nil: true
 
   before_create :calculate_ranking
   after_update :recalculate_rankings_if_active_changed
@@ -34,7 +34,7 @@ class Player < ApplicationRecord
 
   def calculate_ranking
     if wins > 0
-      self.ranking = 0
+      self.ranking = nil
       recalculate_rankings
     else
       highest_ranking = Player.maximum(:ranking)
