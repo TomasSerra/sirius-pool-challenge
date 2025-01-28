@@ -32,6 +32,7 @@ RSpec.describe 'Players', type: :request, openapi: 'v1/swagger.yaml' do
                            ranking: { type: :integer },
                            profile_picture_url: { type: :string },
                            preferred_cue: { type: :string },
+                           wins: { type: :integer },
                            created_at: { type: :string, format: 'date-time' },
                            updated_at: { type: :string, format: 'date-time' }
                          },

@@ -382,6 +382,8 @@ paths:
                               type: string
                             preferred_cue:
                               type: string
+                            wins:
+                              type: integer
                             created_at:
                               type: string
                               format: date-time
